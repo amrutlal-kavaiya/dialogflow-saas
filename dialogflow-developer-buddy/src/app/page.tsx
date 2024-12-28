@@ -1,11 +1,19 @@
-import Image from "next/image";
-import Link from 'next/link';
-import { FaRobot, FaRoute, FaCode, FaCogs, FaProjectDiagram, FaBug, FaComments, FaChartLine, FaVial, FaGraduationCap } from 'react-icons/fa';
+import { FC } from 'react';
+import { FaRobot, FaRoute, FaCode, FaCogs, FaProjectDiagram, FaBug, FaChartLine, FaVial } from 'react-icons/fa';
+import Hero from '@/components/Hero';
+import FeatureCard from '@/components/FeatureCard';
 import Footer from '@/components/Footer';
 import Pricing from '@/components/Pricing';
 
+interface Feature {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  link: string;
+}
+
 export default function Home() {
-  const features = [
+  const features: Feature[] = [
     {
       icon: <FaRobot className="w-6 h-6" />,
       title: "Intent Generation",
@@ -29,23 +37,26 @@ export default function Home() {
       title: "Webhook Generator",
       description: "Create webhooks and fulfillment code",
       link: "/webhooks"
-    },{
-      icon: <FaProjectDiagram className="w-6 h-6" />,  // Instead of FaDiagram
+    },
+    {
+      icon: <FaProjectDiagram className="w-6 h-6" />,
       title: "Flow Generator",
       description: "Design and generate custom workflow diagrams with an intuitive interface",
       link: "/flowmaker"
     },
     {
-      icon: <FaBug className="w-6 h-6" />,  // Instead of Bug
+      icon: <FaBug className="w-6 h-6" />,
       title: "Debugddy",
       description: "Advanced debugging tool for tracking and resolving application issues",
       link: "/debugdddy"
-    },{
+    },
+    {
       icon: <FaChartLine className="w-6 h-6" />,
       title: "Analytics Dashboard",
       description: "Track and analyze chatbot performance metrics and user interactions",
       link: "/analytics"
-    },{
+    },
+    {
       icon: <FaVial className="w-6 h-6" />,
       title: "Test Suite",
       description: "Automated testing tools for validating chatbot responses and conversation flows",
@@ -54,59 +65,58 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <main className="flex-grow">
         {/* Hero Section */}
-        <div className="bg-white">
-          <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                Dialogflow Developer Buddy
-              </h1>
-              <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Your AI-powered assistant for building better Dialogflow chatbots
+        <Hero />
+        
+        {/* Features Section */}
+        <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+          <div className="max-w-7xl mx-auto">
+            {/* Section Header */}
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+                Powerful Features
+              </h2>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
+                Everything you need to build and manage your Dialogflow chatbots effectively
               </p>
-              <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-                <Link href="/dashboard" className="rounded-md shadow">
-                  <div className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-                    Get Started
-                  </div>
-                </Link>
-              </div>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {features.map((feature, index) => (
+                <FeatureCard
+                  key={index}
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+                  link={feature.link}
+                />
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Features Section */}
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => (
-              <Link key={index} href={feature.link}>
-                <div className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200">
-                  <div>
-                    <span className="rounded-lg inline-flex p-3 bg-indigo-50 text-indigo-700">
-                      {feature.icon}
-                    </span>
-                  </div>
-                  <div className="mt-8">
-                    <h3 className="text-lg font-medium">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      {feature.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-500">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          {/* Decorative Background Elements */}
+          <div className="absolute inset-0 bg-grid-gray-100 dark:bg-grid-gray-800 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]">
           </div>
-        </div>
+        </section>
 
-        {/* Pricing Section */}
-        <Pricing />
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
+
+        {/* Pricing Section with Proper Spacing */}
+        <section className="relative py-20 bg-white dark:bg-gray-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Pricing />
+          </div>
+        </section>
       </main>
-      <Footer />
+
+      {/* Footer with Proper Spacing */}
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 }
