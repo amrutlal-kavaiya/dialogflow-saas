@@ -16,6 +16,8 @@ import {
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'Home', path: '/', icon: <Home className="w-4 h-4" /> },
@@ -108,11 +110,32 @@ const Navbar = () => {
                 text-gray-900 font-semibold transition-all duration-200 
                 hover:bg-cyan-500"
             >
-              Login
-            </Link>
+              <Menu className="h-6 w-6 text-gray-500" />
+            </button>
           </div>
         </div>
       </div>
+
+      {isMobileMenuOpen && (
+        <div className="sm:hidden">
+          <div className="pt-2 pb-3 space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={`${
+                  pathname === item.path
+                    ? 'bg-indigo-50 border-indigo-500 text-indigo-700'
+                    : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
+                } block pl-3 pr-4 py-2 border-l-4 text-base font-medium transition-colors duration-200`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
