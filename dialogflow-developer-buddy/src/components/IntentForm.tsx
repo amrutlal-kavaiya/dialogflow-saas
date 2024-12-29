@@ -1,9 +1,7 @@
-// components/IntentForm.tsx
-"use client";
 "use client";
 
 import React, { useState } from 'react';
-import { Trash2Icon, PlusCircleIcon, DownloadIcon, PencilIcon, CheckIcon, XIcon } from 'lucide-react';
+import { Trash2Icon, PlusCircleIcon, DownloadIcon, PencilIcon, CheckIcon, XIcon, SparklesIcon } from 'lucide-react';
 
 interface Intent {
   id: string;
@@ -139,137 +137,194 @@ const IntentForm = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto space-y-8">
       {/* Examples Section */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Examples</h2>
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+          Example Intents
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {exampleIntents.map((example, index) => (
             <div 
               key={index}
-              className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="group p-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl border border-gray-700/50 cursor-pointer
+                         hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
               onClick={() => loadExample(example)}
             >
-              <p className="font-medium mb-2 text-gray-900 dark:text-white">Input: "{example.input}"</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Click to load {example.outputs.length} similar intents</p>
+              <p className="font-medium mb-2 text-gray-100">
+                <SparklesIcon className="inline-block w-4 h-4 mr-2 text-blue-400" />
+                "{example.input}"
+              </p>
+              <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                Click to load {example.outputs.length} similar intents
+              </p>
             </div>
           ))}
         </div>
       </div>
 
       {showProBanner && (
-        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
-          <p className="text-blue-800 dark:text-blue-200">
-            <span className="font-semibold">Upgrade to Pro! </span>
-            You've reached the free limit of 10 intents. Get the Pro plan to generate 25+ intents and unlock more features.
-            <a href="/pricing" className="ml-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">
-              Learn More
-            </a>
-          </p>
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse" />
+          <div className="relative p-6 rounded-xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-blue-500/20">
+            <p className="text-gray-100">
+              <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Upgrade to Pro!
+              </span>
+              <span className="ml-2">
+                You've reached the free limit of 10 intents. Get the Pro plan for 25+ intents and more features.
+              </span>
+              <a href="/pricing" className="ml-2 text-blue-400 hover:text-blue-300 underline underline-offset-2">
+                Learn More →
+              </a>
+            </p>
+          </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mb-8 space-y-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="userInput" className="font-medium text-gray-900 dark:text-white">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <label htmlFor="userInput" className="block font-medium text-gray-100">
             Enter your base intent:
           </label>
-          <textarea
-            id="userInput"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            className="px-4 py-2 border rounded-lg h-24 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
-            placeholder="Enter your intent here..."
-            required
-          />
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-30 transition duration-300" />
+            <textarea
+              id="userInput"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              className="relative w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-100 
+                         focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300
+                         placeholder-gray-500 resize-none h-24"
+              placeholder="Enter your intent here..."
+              required
+            />
+          </div>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-500/50 transition-colors"
+          className="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium
+                   hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed
+                   transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]
+                   shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
         >
-          {loading ? 'Generating...' : 'Generate Similar Intents'}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              Generating...
+            </span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <SparklesIcon className="w-5 h-5" />
+              Generate Similar Intents
+            </span>
+          )}
         </button>
       </form>
 
-      <div className="mb-6">
-        <div className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={newIntent}
-            onChange={(e) => setNewIntent(e.target.value)}
-            className="flex-grow px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
-            placeholder="Add custom intent..."
-          />
-          <button
-            onClick={handleAddIntent}
-            className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-          >
-            <PlusCircleIcon className="w-6 h-6" />
-          </button>
+      <div className="space-y-4">
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-20 group-hover:opacity-30 transition duration-300" />
+          <div className="relative flex items-center gap-2">
+            <input
+              type="text"
+              value={newIntent}
+              onChange={(e) => setNewIntent(e.target.value)}
+              className="flex-grow px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-100
+                         focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+              placeholder="Add custom intent..."
+            />
+            <button
+              onClick={handleAddIntent}
+              className="p-3 rounded-xl bg-blue-500/10 text-blue-400 hover:text-blue-300 hover:bg-blue-500/20
+                       transition-all duration-300"
+            >
+              <PlusCircleIcon className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </div>
 
       {intents.length > 0 && (
         <div className="space-y-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Generated Intents</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+              Generated Intents
+            </h2>
             <button
               onClick={exportToCSV}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600
+                       text-white hover:from-green-600 hover:to-emerald-700 transition-all duration-300
+                       shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transform hover:scale-[1.02]"
             >
               <DownloadIcon className="w-4 h-4" />
               Export CSV
             </button>
           </div>
-          {intents.map((intent) => (
-            <div
-              key={intent.id}
-              className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
-            >
-              {editingId === intent.id ? (
-                <div className="flex-grow flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={editText}
-                    onChange={(e) => setEditText(e.target.value)}
-                    className="flex-grow px-3 py-1 border rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
-                    autoFocus
-                  />
-                  <button
-                    onClick={() => saveEdit(intent.id)}
-                    className="p-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300"
-                  >
-                    <CheckIcon className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={cancelEditing}
-                    className="p-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300"
-                  >
-                    <XIcon className="w-5 h-5" />
-                  </button>
+          
+          <div className="space-y-3">
+            {intents.map((intent) => (
+              <div
+                key={intent.id}
+                className="group relative"
+              >
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/50 to-purple-500/50 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-300" />
+                <div className="relative flex items-center justify-between p-4 bg-gray-800/80 rounded-xl border border-gray-700/50
+                              group-hover:border-blue-500/30 transition-all duration-300">
+                  {editingId === intent.id ? (
+                    <div className="flex-grow flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        className="flex-grow px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-100
+                                 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        autoFocus
+                      />
+                      <button
+                        onClick={() => saveEdit(intent.id)}
+                        className="p-2 rounded-lg bg-green-500/10 text-green-400 hover:text-green-300 hover:bg-green-500/20
+                                 transition-all duration-300"
+                      >
+                        <CheckIcon className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={cancelEditing}
+                        className="p-2 rounded-lg bg-gray-500/10 text-gray-400 hover:text-gray-300 hover:bg-gray-500/20
+                                 transition-all duration-300"
+                      >
+                        <XIcon className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="flex-grow text-gray-100">{intent.text}</p>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => startEditing(intent)}
+                          className="p-2 rounded-lg bg-blue-500/10 text-blue-400 hover:text-blue-300 hover:bg-blue-500/20
+                                   transition-all duration-300"
+                        >
+                          <PencilIcon className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleRemoveIntent(intent.id)}
+                          className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:text-red-300 hover:bg-red-500/20
+                                   transition-all duration-300"
+                        >
+                          <Trash2Icon className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <>
-                  <p className="flex-grow text-gray-900 dark:text-white">{intent.text}</p>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => startEditing(intent)}
-                      className="p-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                    >
-                      <PencilIcon className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => handleRemoveIntent(intent.id)}
-                      className="p-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
-                    >
-                      <Trash2Icon className="w-5 h-5" />
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

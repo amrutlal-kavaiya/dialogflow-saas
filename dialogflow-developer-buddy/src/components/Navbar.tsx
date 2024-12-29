@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -34,19 +35,29 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-[#1E1E1E] py-3 shadow-lg">
-      <div className="container mx-auto px-4">
+    <nav className="relative bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-3 border-b border-gray-800/50">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-5"></div>
+      
+      {/* Main Content */}
+      <div className="container mx-auto px-4 relative">
         {/* Desktop Navigation */}
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 text-white no-underline min-w-fit">
-            <img
-              src="/Dialogflow.png"
-              alt="Dialogflow Buddy"
-              className="w-8 h-8 rounded-lg"
-            />
+          <Link href="/" className="group flex items-center space-x-3 text-white no-underline min-w-fit">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-300" />
+              <img
+                src="/Dialogflow.png"
+                alt="Dialogflow Buddy"
+                className="relative w-8 h-8 rounded-lg transform group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
             <span className="text-lg font-semibold whitespace-nowrap">
-              Dialogflow <span className="text-cyan-400">Buddy</span>
+              Dialogflow{' '}
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Buddy
+              </span>
             </span>
           </Link>
 
@@ -57,12 +68,14 @@ const Navbar = () => {
                 <li key={item.path} className="whitespace-nowrap">
                   <Link
                     href={item.path}
-                    className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-md transition-colors duration-200 text-sm
+                    className={`group flex items-center space-x-1.5 px-3 py-2 rounded-lg transition-all duration-200 text-sm
                       ${pathname === item.path 
-                        ? 'text-cyan-400 bg-cyan-400/10' 
-                        : 'text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10'}`}
+                        ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400' 
+                        : 'text-gray-400 hover:text-blue-400 hover:bg-blue-500/10'}`}
                   >
-                    {item.icon}
+                    <span className="transform group-hover:scale-110 transition-transform duration-200">
+                      {item.icon}
+                    </span>
                     <span>{item.name}</span>
                   </Link>
                 </li>
@@ -71,10 +84,10 @@ const Navbar = () => {
           </div>
 
           {/* Right side buttons */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-400 hover:text-white focus:outline-none"
+              className="lg:hidden p-2 text-gray-400 hover:text-blue-400 focus:outline-none transition-colors duration-200"
               type="button"
               aria-label="Toggle navigation"
             >
@@ -83,9 +96,11 @@ const Navbar = () => {
 
             <Link
               href="/login"
-              className="hidden lg:inline-flex items-center px-4 py-1.5 rounded-md bg-cyan-400 
-                text-gray-900 font-semibold transition-all duration-200 text-sm
-                hover:bg-cyan-500 transform hover:-translate-y-0.5 min-w-fit whitespace-nowrap ml-2"
+              className="hidden lg:inline-flex items-center px-4 py-2 rounded-lg 
+                bg-gradient-to-r from-blue-500 to-purple-600 
+                text-white font-medium transition-all duration-300 text-sm
+                hover:from-blue-600 hover:to-purple-700
+                transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
             >
               Login
             </Link>
@@ -95,15 +110,15 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700/50">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium transition-all duration-200
                     ${pathname === item.path
-                      ? 'text-cyan-400 bg-cyan-400/10'
-                      : 'text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10'}`}
+                      ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400'
+                      : 'text-gray-400 hover:text-blue-400 hover:bg-blue-500/10'}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.icon}
@@ -112,9 +127,12 @@ const Navbar = () => {
               ))}
               <Link
                 href="/login"
-                className="flex items-center justify-center mt-4 px-6 py-2 rounded-md bg-cyan-400 
-                  text-gray-900 font-semibold transition-all duration-200 
-                  hover:bg-cyan-500"
+                className="flex items-center justify-center mt-4 px-6 py-2 rounded-lg
+                  bg-gradient-to-r from-blue-500 to-purple-600 
+                  text-white font-medium transition-all duration-300
+                  hover:from-blue-600 hover:to-purple-700
+                  transform hover:scale-105"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Login
               </Link>

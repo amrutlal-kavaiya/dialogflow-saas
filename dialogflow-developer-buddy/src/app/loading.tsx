@@ -1,10 +1,7 @@
-// LoadingSpinner.tsx
 import React from 'react';
 
-// Define the different types of animations available
-type LoadingVariant = 'pulse' | 'spin' | 'dots';
+type LoadingVariant = 'pulse' | 'spin' | 'dots' | 'gradient';
 
-// Props interface for our loading component
 interface LoadingSpinnerProps {
   variant?: LoadingVariant;
   size?: 'sm' | 'md' | 'lg';
@@ -16,22 +13,20 @@ interface LoadingSpinnerProps {
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   variant = 'spin',
   size = 'md',
-  color = 'text-blue-600',
+  color = 'text-blue-600 dark:text-blue-400',
   text = 'Loading...',
   fullScreen = false,
 }) => {
-  // Map size prop to Tailwind classes
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
     lg: 'w-12 h-12',
   };
 
-  // Create spinning animation component
   const SpinningCircle = () => (
     <div className={`${sizeClasses[size]} ${color} animate-spin`}>
       <svg
-        className="w-full h-full"
+        className="w-full h-full drop-shadow-lg"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -53,54 +48,82 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     </div>
   );
 
-  // Create pulsing circle animation component
   const PulsingCircle = () => (
-    <div className={`${sizeClasses[size]} ${color} animate-pulse rounded-full bg-current`} />
+    <div className={`${sizeClasses[size]} ${color} animate-pulse rounded-full bg-current shadow-lg`} />
   );
 
-  // Create bouncing dots animation component
   const BouncingDots = () => (
     <div className="flex space-x-2">
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className={`${sizeClasses['sm']} ${color} rounded-full animate-bounce`}
-          style={{ animationDelay: `${i * 0.15}s` }}
+          className={`${sizeClasses['sm']} ${color} rounded-full animate-bounce shadow-lg`}
+          style={{
+            animationDelay: `${i * 0.15}s`,
+            animationDuration: '0.6s'
+          }}
         />
       ))}
     </div>
   );
 
-  // Select the appropriate animation based on variant prop
+  const GradientSpinner = () => (
+    <div className={`${sizeClasses[size]} relative animate-spin`}>
+      <div className="absolute w-full h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur opacity-75" />
+      <div className="absolute w-full h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
+      <div className="absolute inset-1 rounded-full bg-gray-900 dark:bg-gray-800" />
+    </div>
+  );
+
   const LoadingAnimation = () => {
     switch (variant) {
       case 'pulse':
         return <PulsingCircle />;
       case 'dots':
         return <BouncingDots />;
+      case 'gradient':
+        return <GradientSpinner />;
       default:
         return <SpinningCircle />;
     }
   };
 
-  // If fullScreen is true, center the loading spinner in the viewport
+  const Backdrop = ({ children }: { children: React.ReactNode }) => (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 dark:bg-gray-900/75 backdrop-blur-sm">
+      {children}
+    </div>
+  );
+
+  const Container = ({ children }: { children: React.ReactNode }) => (
+    <div className="flex flex-col items-center space-y-4 p-6 rounded-lg bg-white/10 dark:bg-gray-800/30 backdrop-blur-lg shadow-xl">
+      {children}
+    </div>
+  );
+
+  const LoadingText = () => (
+    text && (
+      <p className={`${color} text-sm font-medium animate-pulse`}>
+        {text}
+      </p>
+    )
+  );
+
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
-        <div className="flex flex-col items-center space-y-4">
+      <Backdrop>
+        <Container>
           <LoadingAnimation />
-          {text && <p className={`${color} text-sm font-medium`}>{text}</p>}
-        </div>
-      </div>
+          <LoadingText />
+        </Container>
+      </Backdrop>
     );
   }
 
-  // Default render with optional loading text
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <Container>
       <LoadingAnimation />
-      {text && <p className={`${color} text-sm font-medium`}>{text}</p>}
-    </div>
+      <LoadingText />
+    </Container>
   );
 };
 
@@ -113,14 +136,14 @@ import LoadingSpinner from './LoadingSpinner';
 // Basic usage
 <LoadingSpinner />
 
-// Custom variant
-<LoadingSpinner variant="dots" color="text-purple-600" />
+// New gradient variant
+<LoadingSpinner variant="gradient" color="text-purple-600" />
 
-// Full screen loading
+// Full screen with blur backdrop
 <LoadingSpinner fullScreen size="lg" text="Processing..." />
 
-// Different sizes
-<LoadingSpinner size="sm" />
-<LoadingSpinner size="md" />
-<LoadingSpinner size="lg" />
+// Different variants with dark mode support
+<LoadingSpinner variant="spin" color="text-blue-600 dark:text-blue-400" />
+<LoadingSpinner variant="pulse" color="text-purple-600 dark:text-purple-400" />
+<LoadingSpinner variant="dots" color="text-green-600 dark:text-green-400" />
 */

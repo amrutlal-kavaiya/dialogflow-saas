@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import { FaRobot, FaRoute, FaCode, FaCogs, FaProjectDiagram, FaBug, FaChartLine, FaVial } from 'react-icons/fa';
+import { FaRobot, FaRoute, FaCode, FaCogs, FaProjectDiagram, FaBug, FaChartLine, FaVial, FaInfoCircle } from 'react-icons/fa';
 import Hero from '@/components/Hero';
 import FeatureCard from '@/components/FeatureCard';
 import Footer from '@/components/Footer';
-import Pricing from '@/components/Pricing';
 
 interface Feature {
   icon: JSX.Element;
@@ -65,20 +64,26 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col">
       <main className="flex-grow">
         {/* Hero Section */}
         <Hero />
         
         {/* Features Section */}
-        <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+            <div className="text-center mb-16 relative">
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 sm:text-4xl">
                 Powerful Features
               </h2>
-              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
+              <div className="group relative inline-block">
+                <FaInfoCircle className="inline-block ml-2 mb-1 text-gray-400 hover:text-blue-400 transition-colors duration-200 cursor-help" />
+                <div className="invisible group-hover:visible absolute z-10 w-64 p-4 bg-gray-800 text-gray-200 text-sm rounded-lg shadow-lg -right-8 top-8">
+                  Click on any feature card to explore detailed functionality and documentation
+                </div>
+              </div>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-300">
                 Everything you need to build and manage your Dialogflow chatbots effectively
               </p>
             </div>
@@ -92,30 +97,20 @@ export default function Home() {
                 title={feature.title}
                 description={feature.description}
                 link={feature.link}
-                className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                className="bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-gray-600"
               />
               ))}
             </div>
           </div>
 
           {/* Decorative Background Elements */}
-          <div className="absolute inset-0 bg-grid-gray-100 dark:bg-grid-gray-800 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]">
-          </div>
-        </section>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
-
-        {/* Pricing Section with Proper Spacing */}
-        <section className="relative py-20 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Pricing />
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10">
           </div>
         </section>
       </main>
 
       {/* Footer with Proper Spacing */}
-      <div className="mt-auto">
+      <div className="mt-auto bg-gray-900">
         <Footer />
       </div>
     </div>
